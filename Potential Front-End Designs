@@ -1,0 +1,22 @@
+// Ideal responses
+When loading into the webapp, user should be presented with a text box where they input their major
+Front-end "slides/transforms' into the schedule + list design
+From here, the schedule + lists are populated, displayed, and ready for user to interact with
+To move classes within the schedule, user should ideally be able drag'n'drop
+    The same could apply to the list elements
+        Not sure how much different it would be from doing it for the schedule, but lower priority in case of time restriction
+        
+
+
+// Possible JS frameworks -- useful for designing/modifying the front-end 
+http://interactjs.io/
+https://shopify.github.io/draggable/
+
+// Creation
+Create a 3x4 table (3 quarters, 4 years)
+First implementation of lists don't need to be collapsable, just capable of displaying data
+    Should still be somewhat visuall appearling
+Each item in a box in the schedule should have four areas (to place classes)
+Each of these areas should be an object
+Stuff from the lists should also be objects
+    This is to add event handlers needed for interaction
