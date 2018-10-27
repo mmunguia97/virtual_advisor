@@ -21,6 +21,13 @@ app.get('/', (req,res) => {
     res.sendFile(path.join(__dirname+'/index.html'));
 });
 
+app.get('/createPlan', (req, res) => {
+    let major = req.body;
+    
+    connection.query('select classId in `ClassInMajor` from where isRequired=1;', (err, result) => {
+
+    }
+}
 
 // Listen   
 app.listen(port, (err) => {  
