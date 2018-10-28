@@ -25,12 +25,15 @@ app.get('/createPlan', (req, res) => {
     let major = req.body;
     
     connection.query('select classId in `ClassInMajor` from where isRequired=1;', (err, result) => {
+        if (err) {
+	    	console.log("Error ocurred.", err);
+  	    	res.send({err});
+        }
+        else {
 
-    }
-}
+        }
+    });
+});
 
-// Listen   
-app.listen(port, (err) => {  
-    if (typeof(err) == "undefined")  
-        console.log('Your application is running on : ' + port + ' port');  
-});  
+// listen
+app.listen(port, () => console.log(`Server started on ${port}`));
