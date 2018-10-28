@@ -24,13 +24,27 @@ app.get('/', (req,res) => {
 app.get('/createPlan', (req, res) => {
     let major = req.body;
     
-    connection.query('select classId in `ClassInMajor` from where isRequired=1;', (err, result) => {
+    connection.query('select classId from `ClassInMajor` where isRequired=1', (err, result) => {
         if (err) {
 	    	console.log("Error ocurred.", err);
   	    	res.send({err});
         }
         else {
+            // what to do here? I'll figure it out later
+        }
+    });
+});
 
+app.get('/getMajorList', (req, res) => {
+    let majorId = req.body.majorId;
+    let query = 'select * from `ClassInMajor` where majorId=' + majorId;
+    connection.query(query, (err, results) => {
+        if (err) {
+	    	console.log("Error ocurred.", err);
+  	    	res.send({err});
+        }
+        else {
+            res.send(results);
         }
     });
 });
