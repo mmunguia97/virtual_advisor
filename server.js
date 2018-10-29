@@ -18,26 +18,60 @@ connection.connect( (err) => {
 
 // Renders the index.html
 app.get('/', (req,res) => {    
-    res.sendFile(path.join(__dirname+'/index.html'));
+    res.sendFile(path.join(__dirname + '/index.html'));
 });
 
+
+
+
+const listTypes = [
+    { table: 'ClassInMajor', id: 'majorId', },
+    { table: 'ClassInMinor', id: 'minorId', },
+    { table: 'Department', id: 'id', },
+];
+
+// Sets up the 4 year plan and initializes the two list views (major, core)
 app.get('/createPlan', (req, res) => {
-    let major = req.body;
-    
-    connection.query('select classId from `ClassInMajor` where isRequired=1', (err, result) => {
+    let majorId = req.body.id;
+
+    // collects all of the classes in that major. front-end should split them by what's in the view and what's on the schedule
+    let majorViewQuery = 'select * from `Course` where id in (select classId from `ClassInMajor` where majorId=' + majorId;
+    connection.query(majorViewQuery, (err, results) => {
         if (err) {
 	    	console.log("Error ocurred.", err);
   	    	res.send({err});
         }
-        else {
-            // what to do here? I'll figure it out later
-        }
+        else 
+            res.send(results);
     });
+
+    let coreViewQuery = 'select * from `Core`';
+    connection.query(majorViewQuery, (err, results) => {
+        if (err) {
+	    	console.log("Error ocurred.", err);
+  	    	res.send({err});
+        }
+        else 
+            res.send(results);
+    });
+
+    // possible second approach to get classes that go in schedule
+    // let majorScheduleQuery = ('select deptName, catalogNumber from Course where id in (select classId from `ClassInMajor` where isRequired=1 and majorId=' + majorId;
+    // connection.query(majorScheduleQuery, (err, results) => {
+    //     if (err) {
+	//     	console.log("Error ocurred.", err);
+  	//     	res.send({err});
+    //     }
+    //     else {
+    //         res.send(results);
+    //     }
+    // });
 });
 
-app.get('/getMajorList', (req, res) => {
-    let majorId = req.body.majorId;
-    let query = 'select * from `ClassInMajor` where majorId=' + majorId;
+// gets a list for a major [0], minor [1], or dept [1]
+app.get('/getList', (req, res) => {
+    let listObject = listTypes[req.body.index];
+    let query = 'select * from `' +  listObject.table + '` where majorId=' + listObject.id;
     connection.query(query, (err, results) => {
         if (err) {
 	    	console.log("Error ocurred.", err);
