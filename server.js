@@ -56,7 +56,7 @@ app.get('/createPlan', (req, res) => {
     });
 
     // possible second approach to get classes that go in schedule
-    // let majorScheduleQuery = ('select deptName, catalogNumber from Course where id in (select classId from `ClassInMajor` where isRequired=1 and majorId=' + majorId;
+    // let majorScheduleQuery = ('select deptName, catalogNumber from Course where id in (select classId from `ClassInMajor` where isOnPlan=1 and majorId=' + majorId;
     // connection.query(majorScheduleQuery, (err, results) => {
     //     if (err) {
 	//     	console.log("Error ocurred.", err);
