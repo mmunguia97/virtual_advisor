@@ -1,68 +1,25 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SCU Virtual Advisor</title>
-<style> 
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #cc0000;
-}
+    <head>
+        <title>SCU Virtual Advisor</title>
+    </head>
+    <body>
+        <a href="https://www.scu.edu"><img src="Santa_Clara_U_Seal.svg.png" alt="Santa Clara University Seal"></a>
+        <main>
+            <p>Welcome to the SCU Virtual Advisor!</p>
 
-li {
-    float: left;
-}
-
-li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 16px;
-    text-decoration: none;
-}
-
-li a:hover {
-    background-color: #800000;
-}
-  
-input[type=text] {
-    width: 165px;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    background-color: white;
-    background-image: url('searchicon.png');
-    background-position: 10px 10px; 
-    background-repeat: no-repeat;
-    padding: 12px 20px 12px 40px;
-    -webkit-transition: width 0.4s ease-in-out;
-    transition: width 0.4s ease-in-out;
-}
-
-input[type=text]:focus {
-    width: 100%;
-}
-</style>
-</head>
-<body>
-
-<!--Main Banner-->
-<ul>
-  <img src="Santa_Clara_U_Seal.svg.png" alt="Santa Clara University Seal" style="width:50px;height:50px;">
-</ul> 
- 
-<br>
-
-<!--Animated form-->
-
-<form>
-  <input type="text" name="major" placeholder="Enter Major..">
-</form>
-
-</body>
+            <div>
+                <p>Please select your school year and enter your major.</p>
+                <!--TODO: Update form action-->
+                <form action=#>
+                    <label for="freshman"><input id="freshman" type="radio" name="student_school_year" checked> First Year</label>
+                    <label for="sophomore"><input id="sophomore" type="radio" name="student_school_year"> Second Year</label>
+                    <label for="junior"><input id="junior" type="radio" name="student_school_year"> Third Year</label>
+                    <label for="senior"><input id="senior" type="radio" name="student_school_year"> Fourth Year</label><br>
+                    <input type="text" placeholder="Enter major" required>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </main>
+    </body>
 </html>
