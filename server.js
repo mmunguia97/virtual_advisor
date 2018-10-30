@@ -21,20 +21,22 @@ app.get('/', (req,res) => {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
 
+// Listen
+app.listen(port, () => console.log(`Server started on ${port}`));
 
 
-
+// Types of list view
 const listTypes = [
-    { table: 'ClassInMajor', id: 'majorId', },
-    { table: 'ClassInMinor', id: 'minorId', },
-    { table: 'Department', id: 'id', },
+    { table: 'ClassInMajor', id: 'majorId' },
+    { table: 'ClassInMinor', id: 'minorId' },
+    { table: 'Department', id: 'id' }
 ];
 
 // Sets up the 4 year plan and initializes the two list views (major, core)
 app.get('/createPlan', (req, res) => {
     let majorId = req.body.id;
 
-    // collects all of the classes in that major. front-end should split them by what's in the view and what's on the schedule
+    // Collects courses in the major view
     let majorViewQuery = 'select * from `Course` where id in (select classId from `ClassInMajor` where majorId=' + majorId;
     connection.query(majorViewQuery, (err, results) => {
         if (err) {
@@ -45,8 +47,9 @@ app.get('/createPlan', (req, res) => {
             res.send(results);
     });
 
+    // Collects the core entries for the Core View
     let coreViewQuery = 'select * from `Core`';
-    connection.query(majorViewQuery, (err, results) => {
+    connection.query(coreViewQuery, (err, results) => {
         if (err) {
 	    	console.log("Error ocurred.", err);
   	    	res.send({err});
@@ -55,20 +58,20 @@ app.get('/createPlan', (req, res) => {
             res.send(results);
     });
 
-    // possible second approach to get classes that go in schedule
-    // let majorScheduleQuery = ('select deptName, catalogNumber from Course where id in (select classId from `ClassInMajor` where isOnPlan=1 and majorId=' + majorId;
-    // connection.query(majorScheduleQuery, (err, results) => {
-    //     if (err) {
-	//     	console.log("Error ocurred.", err);
-  	//     	res.send({err});
-    //     }
-    //     else {
-    //         res.send(results);
-    //     }
-    // });
+    // Collects classes that go in 4 year schedule
+    let majorScheduleQuery = 'select courseAbrreviation from `Course` where id in (select classId from `ClassInMajor` where isAutoSchedule=1 and majorId=' + majorId;
+    connection.query(majorScheduleQuery, (err, results) => {
+        if (err) {
+	    	console.log("Error ocurred.", err);
+  	    	res.send({err});
+        }
+        else {
+            res.send(results);
+        }
+    });
 });
 
-// gets a list for a major [0], minor [1], or dept [1]
+// Gets a list view for a major [0], minor [1], or dept [1]
 app.get('/getList', (req, res) => {
     let listObject = listTypes[req.body.index];
     let query = 'select * from `' +  listObject.table + '` where majorId=' + listObject.id;
@@ -82,6 +85,3 @@ app.get('/getList', (req, res) => {
         }
     });
 });
-
-// listen
-app.listen(port, () => console.log(`Server started on ${port}`));
