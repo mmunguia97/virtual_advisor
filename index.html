@@ -1,33 +1,55 @@
+<!--https://meet.google.com/gqw-wefc-vuz-->
+
 <!DOCTYPE html>
 <html>
     <head>
-        <title>SCU Virtual Advisor</title>
-        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    	<title>SCU Virtual Advisor</title>
+      	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+        <style>
+            ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background-color: #b30738;
+            }
+
+            li {
+                float: left;
+            }
+
+            li a {
+                display: block;
+                padding: 8px;
+            }
+
+            img {
+                width: 50px;
+                height : 50px;
+            }
+        </style>
     </head>
     <body>
-        <a href="https://www.scu.edu" target="_blank"><img src="Santa_Clara_U_Seal.svg.png" alt="Santa Clara University Seal"></a>
+        <ul>
+            <li><a href="https://www.scu.edu" target="_blank"><img src="Santa_Clara_U_Seal.svg.png" alt="Santa Clara University Seal"></a></li>
+            <li><h2 style="color: white;">SCU Virtual Advisor</h2>
+        </ul>
         <main>
-            <p>Welcome to the SCU Virtual Advisor!</p>
             <div>
                 <p>Please select your school year and enter your major.</p>
                 <!--TODO: Update form action-->
                 <form action=#>
+                    <!--
                     <label for="freshman"><input id="freshman" type="radio" name="student_school_year" checked> First Year</label>
                     <label for="sophomore"><input id="sophomore" type="radio" name="student_school_year"> Second Year</label>
                     <label for="junior"><input id="junior" type="radio" name="student_school_year"> Third Year</label>
-                    <label for="senior"><input id="senior" type="radio" name="student_school_year"> Fourth Year</label><br>
+                    <label for="senior"><input id="senior" type="radio" name="student_school_year"> Fourth Year</label><br><br>
+                    -->
                     <input type="text" placeholder="Enter major" required>
                     <button type="submit">Submit</button>
                 </form>
-                <ul class="dropdown-menu">
-                    <li><a href="#">Our Story</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="https://www.facebook.com/">Facebook</a></li>
-                </ul>
             </div>
         </main>
-        <a href="https://github.com/cyates48/virtual_advisor" target="_blank">Find our project on GitHub.</a>
+        <br><a href="https://github.com/cyates48/virtual_advisor" target="_blank">Find our project on GitHub.</a>
     </body>
 </html>
