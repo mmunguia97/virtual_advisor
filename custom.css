@@ -1,0 +1,67 @@
+body {
+	background: #f6f6f6;
+	font-family: Arial;
+}
+
+
+/*INITIAL CONTENT TO DISPLAY*/
+#initial-content {
+	width: 75%;
+}
+.intro {
+	margin: 15% 0px 4% 0px;
+}
+.intro h1 {
+	color: #4e4540;
+	font-size: 52px;
+}
+.intro h4 {
+	color: #333;
+	font-size: 20px;
+	margin-top: 16px;
+}
+.intro p {
+	margin-top: 15px;
+}
+.search-options button {
+	border-radius: 0;
+	vertical-align: top;
+	margin-left: -4.5px;
+}
+.search-options select {
+	border: 1px solid #ccc;
+	border-radius: 0;
+	display: inline;
+	width: 90%;
+}
+
+
+/*NAVBAR*/
+.logo {
+	float: left;
+}
+.navbar {
+	background: #b30738;
+	border-bottom: 1px solid black;
+	padding-bottom: 0;
+	padding-top: 0;
+}
+.navbar-brand {
+	padding-left: 12px;
+	padding-bottom: 0px;
+}
+.text {
+	color: #eee;
+	float: right;
+	margin-top: 2px;
+	padding-left: 5px;
+}
+.text p{
+	color: #eee;
+	margin: 0;
+}
+.text small {
+	font-size: 10px;
+	display: block;
+	margin-bottom: -5px;
+}
