@@ -1,0 +1,15 @@
+/*CSS for the schedule*/
+
+.schedule, .schedule th, .schedule td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+.schedule td{
+	padding-left: 3px;
+	width: 150px;
+	font-size: 16px;
+}
+.schedule th{
+	padding: 10px 5px;
+	font-size: 15px;
+}

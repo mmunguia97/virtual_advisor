@@ -6,13 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome CSS -->
-    <link rel="stylesheet" href="font-awesome/css/all.css" type="text/css">
+    <link rel="stylesheet" href="../font-awesome/css/all.css" type="text/css">
     
-    <!-- Our CSS -->
-    <link rel="stylesheet" href="second-page.css">
-    <!-- <link rel="stylesheet" href="courses-list.css"> -->
+    <!-- Our CSS for previous components -->
+    <link rel="stylesheet" href="../css/courses-list.css">
+    <link rel="stylesheet" href="../css/navbar.css">
+    <link rel="stylesheet" href="../css/schedule.css">
+
+    <!-- Our CSS unique to this webpage -->
+    <link rel="stylesheet" href="../css/main-page.css">
 
     <title>Virtual Advisor</title>
   </head>
@@ -20,7 +24,7 @@
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-brand">
             <div class="logo">
-                <img src="Santa_Clara_U_Seal.svg.png" width="45" height="45">
+                <img src="../img/Santa_Clara_U_Seal.svg.png" width="45" height="45">
             </div>
             <div class="text">
                 <small class="text-uppercase">Santa Clara University</small>
@@ -29,10 +33,12 @@
         </div>
     </nav>
     <div id="main" class="container">
+        <div class="row schedule-title">
+            <h2>Recommended 4 year schedule</h2>
+        </div>
         <div class="row">
-            <div class="basha first">
-                <h2>Recommended 4-year schedule</h2>
-                <table>
+            <div class="schedule-container">
+                <table class="schedule">
                     <tr>
                         <th>Year</th>
                         <th>Fall</th>
@@ -46,17 +52,17 @@
                         <td>MGMT 165</td>
                     </tr>
                     <tr>
-                        <td>CS 189</td>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                    </tr>
-                    <tr>
                         <td>MGMT 165</td>
                         <td>MGMT 165</td>
                         <td>MGMT 165</td>
                     </tr>
                     <tr>
-                        <td>MATH 654</td>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                    </tr>
+                    <tr>
+                        <td>MGMT 165</td>
                         <td>MGMT 165</td>
                         <td>MGMT 165</td>
                     </tr>
@@ -125,8 +131,8 @@
                     </tr>
                 </table>
             </div>
-            <div class="basha second">
-                <div class="courses-list" style="padding-top:8%;margin-right:3%;">
+            <div class="courses-lists">
+                <div class="courses-list">
                     <select class="form-control select-major">
                         <option value="Economics">Economics</option>
                         <option value="Mathematics">Mathematics</option>
@@ -374,13 +380,8 @@
                         </a>
                     </div>
                 </div>
-                <div class="courses-list" style="padding-top:8%;">
-                    <!--<select class="form-control select-major">
-                        <option value="Adv. Writing">Adv. Writing</option>
-                        <option value="Art">Art</option>
-                        <option value selected="CTW">Critical Thinking & Writing</option>
-                    </select>-->
-                    <h4 style="text-align:center;height:45px;padding-top:2%;">Core Requirements</h4>
+                <div class="courses-list">
+                    <h4>Core Requirements</h4>
                     <div class="list-group courses">
                         <a href="#" class="list-group-item list-group-item-action flex-column align-items-start course">
                             <div class="d-flex w-100 justify-content-between">
@@ -624,12 +625,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- <div class="basha">
-            <p>hello</p>
-        </div>
-        <div class="basha">test</div> -->
-        
+        </div>    
     </div>
 
     <!-- Optional JavaScript -->

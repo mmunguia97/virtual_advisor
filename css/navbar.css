@@ -1,0 +1,30 @@
+/*CSS for the navbar on all pages*/
+
+.logo {
+	float: left;
+}
+.navbar {
+	background: #b30738;
+	border-bottom: 1px solid black;
+	padding-bottom: 0;
+	padding-top: 0;
+}
+.navbar-brand {
+	padding-left: 12px;
+	padding-bottom: 0px;
+}
+.text {
+	color: #eee;
+	float: right;
+	margin-top: 2px;
+	padding-left: 5px;
+}
+.text p{
+	color: #eee;
+	margin: 0;
+}
+.text small {
+	font-size: 10px;
+	display: block;
+	margin-bottom: -5px;
+}
