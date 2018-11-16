@@ -18,7 +18,7 @@ connection.connect( (err) => {
 
 // Renders the index.html
 app.get('/', (req,res) => {    
-    res.sendFile(path.join(__dirname + '/main-page.html'));
+    res.sendFile(path.join(__dirname + '/webpages/main-page.html'));
 });
 
 // Listen
