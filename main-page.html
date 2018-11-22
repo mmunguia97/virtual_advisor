@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" type="text/css">
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="../font-awesome/css/all.css" type="text/css">
+    
+    <!-- Our CSS for previous components -->
+    <link rel="stylesheet" href="../css/courses-list.css" type="text/css">
+    <link rel="stylesheet" href="../css/navbar.css" type="text/css">
+    <link rel="stylesheet" href="../css/schedule.css" type="text/css">
+
+    <!-- Our CSS unique to this webpage -->
+    <link rel="stylesheet" href="../css/main-page.css" type="text/css">
+
+    <title>Virtual Advisor</title>
+
+    <!-- JS to populate the table with classes from list -->
+    <!--<script type="text/javascript">
+    function addRow(content, morecontent){
+        if (!document.getElementsByTagName) return;
+
+        tabBody = document.getElementsByTagName("tbody").item(0);
+        row = document.createElement("tr");
+        cell1 = document.createElement("td");
+        cell2 = document.createElement("td");
+        textnode1 = document.createTextNode(content);
+        textnode2 = document.createTextNode(morecontent);
+        cell1.appendChild(textnode1);
+        cell2.appendChile(textnode2);
+        row.appendChild(cell1);
+        row.appendChild(cell2);
+        tabBody.appendChild(row);
+    }
+    </script>-->
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-brand">
+            <div class="logo">
+                <img src="../img/Santa_Clara_U_Seal.svg.png" width="45" height="45">
+            </div>
+            <div class="text">
+                <small class="text-uppercase">Santa Clara University</small>
+                <p>Virtual Advisor</p>
+            </div>
+        </div>
+    </nav>
+    <div id="main" class="container">
+        <div class="row schedule-title">
+            <h2>Recommended 4 year schedule</h2>
+        </div>
+        <div class="row">
+            <div class="schedule-container">
+                <table class="schedule">
+                    <tr>
+                        <th>Year</th>
+                        <th>Fall</th>
+                        <th>Winter</th>
+                        <th>Spring</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="4">First Year</th>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                    </tr>
+                    <tr>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                    </tr>
+                    <tr>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                    </tr>
+                    <tr>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="4">Second Year</th>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                    </tr>
+                    <tr>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                    </tr>
+                    <tr>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                    </tr>
+                    <tr>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="4">Third Year</th>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                    </tr>
+                    <tr>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                    </tr>
+                    <tr>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                    </tr>
+                    <tr>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                    </tr>
+                    <tr>
+                        <th rowspan="4">Fourth Year</th>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                    </tr>
+                    <tr>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                    </tr>
+                    <tr>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                    </tr>
+                    <tr>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                        <td>MGMT 165</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="courses-lists">
+                <div class="courses-list">
+                    <select class="form-control select-major">
+                        <option value="Economics">Economics</option>
+                        <option value="Mathematics">Mathematics</option>
+                        <option value selected="Computer Science">Computer Science</option>
+                    </select>
+                    <div class="list-group courses">
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start course">
+                            <div class="d-flex w-100 justify-content-between">
+                                <p class="course-title">CSCI 10: Intro to Computer Science</p>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Core:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-info">N/A</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Prerequisites:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-info">None</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Quarter:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-danger">Fall</span>
+                                    <span class="badge badge-pill badge-danger">Winter</span>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start course">
+                            <div class="d-flex w-100 justify-content-between">
+                                <p class="course-title">CSCI 60: Object Oriented Programming</p>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Core:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-info">N/A</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Prerequisites:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-warning">CSCI 10</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Quarter:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-danger">Winter</span>
+                                    <span class="badge badge-pill badge-danger">Spring</span>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start course">
+                            <div class="d-flex w-100 justify-content-between">
+                                <p class="course-title">CSCI 61: Data Structures</p>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Core:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-info">N/A</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Prerequisites:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-warning">CSCI 60</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Quarter:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-danger">Fall</span>
+                                    <span class="badge badge-pill badge-danger">Spring</span>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start course">
+                            <div class="d-flex w-100 justify-content-between">
+                                <p class="course-title">CSCI 161: Automata Theory</p>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Core:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-info">N/A</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Prerequisites:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-warning">MATH 51</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Quarter:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-danger">Fall</span>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start course">
+                            <div class="d-flex w-100 justify-content-between">
+                                <p class="course-title">CSCI 163A: Theory of Algorithms</p>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Core:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-info">N/A</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Prerequisites:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-warning">CSCI 61</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Quarter:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-danger">Fall</span>
+                                    <span class="badge badge-pill badge-danger">Winter</span>
+                                    <span class="badge badge-pill badge-danger">Spring</span>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start course">
+                            <div class="d-flex w-100 justify-content-between">
+                                <p class="course-title">CSCI 183: Data Science</p>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Core:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-info">N/A</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Prerequisites:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-warning">CSCI 61</span>
+                                    <span class="badge badge-pill badge-warning">MATH 53</span>
+                                    <span class="badge badge-pill badge-warning">MATH 122</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Quarter:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-danger">Winter</span>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start course">
+                            <div class="d-flex w-100 justify-content-between">
+                                <p class="course-title">CSCI 184: Applied Machine Learning</p>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Core:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-info">N/A</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Prerequisites:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-warning">CSCI 183</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Quarter:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-danger">Spring</span>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start course">
+                            <div class="d-flex w-100 justify-content-between">
+                                <p class="course-title">CSCI 187: Software Design & Management</p>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Core:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-info">N/A</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Prerequisites:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-warning">CSCI 61</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Quarter:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-danger">Fall</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="courses-list">
+                    <h4>Core Requirements</h4>
+                    <div class="list-group courses">
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start course">
+                            <div class="d-flex w-100 justify-content-between">
+                                <p class="course-title">CSCI 10: Intro to Computer Science</p>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Core:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-info">N/A</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Prerequisites:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-info">None</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Quarter:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-danger">Fall</span>
+                                    <span class="badge badge-pill badge-danger">Winter</span>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start course">
+                            <div class="d-flex w-100 justify-content-between">
+                                <p class="course-title">CSCI 60: Object Oriented Programming</p>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Core:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-info">N/A</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Prerequisites:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-warning">CSCI 10</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Quarter:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-danger">Winter</span>
+                                    <span class="badge badge-pill badge-danger">Spring</span>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start course">
+                            <div class="d-flex w-100 justify-content-between">
+                                <p class="course-title">CSCI 61: Data Structures</p>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Core:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-info">N/A</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Prerequisites:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-warning">CSCI 60</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Quarter:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-danger">Fall</span>
+                                    <span class="badge badge-pill badge-danger">Spring</span>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start course">
+                            <div class="d-flex w-100 justify-content-between">
+                                <p class="course-title">CSCI 161: Automata Theory</p>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Core:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-info">N/A</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Prerequisites:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-warning">MATH 51</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Quarter:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-danger">Fall</span>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start course">
+                            <div class="d-flex w-100 justify-content-between">
+                                <p class="course-title">CSCI 163A: Theory of Algorithms</p>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Core:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-info">N/A</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Prerequisites:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-warning">CSCI 61</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Quarter:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-danger">Fall</span>
+                                    <span class="badge badge-pill badge-danger">Winter</span>
+                                    <span class="badge badge-pill badge-danger">Spring</span>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start course">
+                            <div class="d-flex w-100 justify-content-between">
+                                <p class="course-title">CSCI 183: Data Science</p>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Core:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-info">N/A</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Prerequisites:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-warning">CSCI 61</span>
+                                    <span class="badge badge-pill badge-warning">MATH 53</span>
+                                    <span class="badge badge-pill badge-warning">MATH 122</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Quarter:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-danger">Winter</span>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start course">
+                            <div class="d-flex w-100 justify-content-between">
+                                <p class="course-title">CSCI 184: Applied Machine Learning</p>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Core:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-info">N/A</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Prerequisites:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-warning">CSCI 183</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Quarter:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-danger">Spring</span>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start course">
+                            <div class="d-flex w-100 justify-content-between">
+                                <p class="course-title">CSCI 187: Software Design & Management</p>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Core:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-info">N/A</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Prerequisites:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-warning">CSCI 61</span>
+                                </div>
+                            </div>
+                            <div class="d-flex w-100 justify-content-start course-info">
+                                <div class="d-flex flex-wrap">
+                                    <small>Quarter:</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="badge badge-pill badge-danger">Fall</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+  </body>
+</html>
