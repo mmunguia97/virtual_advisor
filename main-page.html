@@ -1,3 +1,108 @@
+<!--IGNORE: Putting this here for later reference
+<!DOCTYPE HTML>
+<html>
+<head>
+<style>
+#div1 {
+    width: 350px;
+    height: 70px;
+    padding: 10px;
+    border: 1px solid #aaaaaa;
+}
+</style>
+<script>
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+}
+</script>
+</head>
+<body>
+
+<p>Drag the W3Schools image into the rectangle:</p>
+
+<div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+<br>
+<img id="drag1" src="img_logo.gif" draggable="true" ondragstart="drag(event)" width="336" height="69">
+
+</body>
+</html>
+===================================================
+<div class="divTable">
+	<div class="divTableBody">
+		<div class="divTableRow">
+			<div class="divTableCell">Year</div>
+			<div class="divTableCell">Fall</div>
+			<div class="divTableCell">Winter</div>
+			<div class="divTableCell">Spring</div>
+		</div>
+		<div class="divTableRow">
+			<div class="divTableCell">First</div>
+			<div class="divTableCell">&nbsp;</div>
+			<div class="divTableCell">&nbsp;</div>
+			<div class="divTableCell">&nbsp;</div>
+		</div>
+		<div class="divTableRow">
+			<div class="divTableCell">Second</div>
+			<div class="divTableCell">&nbsp;</div>
+			<div class="divTableCell">&nbsp;</div>
+			<div class="divTableCell">&nbsp;</div>
+		</div>
+		<div class="divTableRow">
+			<div class="divTableCell">Third</div>
+			<div class="divTableCell">&nbsp;</div>
+			<div class="divTableCell">&nbsp;</div>
+			<div class="divTableCell">&nbsp;</div>
+		</div>
+		<div class="divTableRow">
+			<div class="divTableCell">Fourth</div>
+			<div class="divTableCell">&nbsp;</div>
+			<div class="divTableCell">&nbsp;</div>
+			<div class="divTableCell">&nbsp;</div>
+		</div>
+	</div>
+</div>
+
+.divTable{
+	display: table;
+	width: 100%;
+}
+.divTableRow {
+	display: table-row;
+}
+.divTableHeading {
+	background-color: #EEE;
+	display: table-header-group;
+}
+.divTableCell, .divTableHead {
+	border: 1px solid #999999;
+	display: table-cell;
+	padding: 3px 10px;
+}
+.divTableHeading {
+	background-color: #EEE;
+	display: table-header-group;
+	font-weight: bold;
+}
+.divTableFoot {
+	background-color: #EEE;
+	display: table-footer-group;
+	font-weight: bold;
+}
+.divTableBody {
+	display: table-row-group;
+}
+-->
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -21,34 +126,34 @@
     <title>Virtual Advisor</title>
 
     <!-- JS to populate the table with classes from list -->
-    <!--<script type="text/javascript">
-    function addRow(content, morecontent){
-        if (!document.getElementsByTagName) return;
-
-        tabBody = document.getElementsByTagName("tbody").item(0);
-        row = document.createElement("tr");
-        cell1 = document.createElement("td");
-        cell2 = document.createElement("td");
-        textnode1 = document.createTextNode(content);
-        textnode2 = document.createTextNode(morecontent);
-        cell1.appendChild(textnode1);
-        cell2.appendChile(textnode2);
-        row.appendChild(cell1);
-        row.appendChild(cell2);
-        tabBody.appendChild(row);
+    <script>
+    function allowDrop(ev){
+        ev.preventDefault();
     }
-    </script>-->
+
+    function drag(ev){
+        ev.dataTransfer.setData("text", ev.target.id);
+    }
+
+    function drop(ev){
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text");
+        ev.target.appendChild(document.getElementById(data));
+    }
+    </script>
   </head>
   <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-brand">
-            <div class="logo">
-                <img src="../img/Santa_Clara_U_Seal.svg.png" width="45" height="45">
-            </div>
-            <div class="text">
-                <small class="text-uppercase">Santa Clara University</small>
-                <p>Virtual Advisor</p>
-            </div>
+            <a href="https://www.scu.edu">
+                <div class="logo">
+                    <img src="../img/Santa_Clara_U_Seal.svg.png" width="45" height="45">
+                </div>
+                <div class="text">
+                    <small class="text-uppercase">Santa Clara University</small>
+                    <p>Virtual Advisor</p>
+                </div>
+            </a>
         </div>
     </nav>
     <div id="main" class="container">
