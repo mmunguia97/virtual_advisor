@@ -46,25 +46,25 @@ function drop(ev) {
 			<div class="divTableCell">Spring</div>
 		</div>
 		<div class="divTableRow">
-			<div class="divTableCell">First</div>
+			<div class="divTableCell">First Year</div>
 			<div class="divTableCell">&nbsp;</div>
 			<div class="divTableCell">&nbsp;</div>
 			<div class="divTableCell">&nbsp;</div>
 		</div>
 		<div class="divTableRow">
-			<div class="divTableCell">Second</div>
+			<div class="divTableCell">Second Year</div>
 			<div class="divTableCell">&nbsp;</div>
 			<div class="divTableCell">&nbsp;</div>
 			<div class="divTableCell">&nbsp;</div>
 		</div>
 		<div class="divTableRow">
-			<div class="divTableCell">Third</div>
+			<div class="divTableCell">Third Year</div>
 			<div class="divTableCell">&nbsp;</div>
 			<div class="divTableCell">&nbsp;</div>
 			<div class="divTableCell">&nbsp;</div>
 		</div>
 		<div class="divTableRow">
-			<div class="divTableCell">Fourth</div>
+			<div class="divTableCell">Fourth Year</div>
 			<div class="divTableCell">&nbsp;</div>
 			<div class="divTableCell">&nbsp;</div>
 			<div class="divTableCell">&nbsp;</div>
@@ -125,17 +125,49 @@ function drop(ev) {
 
     <title>Virtual Advisor</title>
 
+    <style>
+    .divTable{
+	    display: table;
+	    width: 100%;
+    }
+    .divTableRow {
+	    display: table-row;
+    }
+    .divTableHeading {
+	    background-color: #EEE;
+	    display: table-header-group;
+    }
+    .divTableCell, .divTableHead {
+	    border: 1px solid #999999;
+	    display: table-cell;
+	    padding: 3px 10px;
+    }
+    .divTableHeading {
+	    background-color: #EEE;
+	    display: table-header-group;
+	    font-weight: bold;
+    }
+    .divTableFoot {
+	    background-color: #EEE;
+	    display: table-footer-group;
+	    font-weight: bold;
+    }
+    .divTableBody {
+	    display: table-row-group;
+    }
+    </style>
+
     <!-- JS to populate the table with classes from list -->
     <script>
-    function allowDrop(ev){
+    function allowDrop(ev) {
         ev.preventDefault();
     }
 
-    function drag(ev){
+    function drag(ev) {
         ev.dataTransfer.setData("text", ev.target.id);
     }
 
-    function drop(ev){
+    function drop(ev) {
         ev.preventDefault();
         var data = ev.dataTransfer.getData("text");
         ev.target.appendChild(document.getElementById(data));
@@ -147,7 +179,8 @@ function drop(ev) {
         <div class="navbar-brand">
             <a href="https://www.scu.edu">
                 <div class="logo">
-                    <img src="../img/Santa_Clara_U_Seal.svg.png" width="45" height="45">
+                    <!-- <img id="drag1" src="img_logo.gif" draggable="true" ondragstart="drag(event)" width="336" height="69"> -->
+                    <img id="drag1" src="../img/Santa_Clara_U_Seal.svg.png" draggable="true" ondragstart="drag(event)" width="45" height="45">
                 </div>
                 <div class="text">
                     <small class="text-uppercase">Santa Clara University</small>
@@ -162,98 +195,41 @@ function drop(ev) {
         </div>
         <div class="row">
             <div class="schedule-container">
-                <table class="schedule">
-                    <tr>
-                        <th>Year</th>
-                        <th>Fall</th>
-                        <th>Winter</th>
-                        <th>Spring</th>
-                    </tr>
-                    <tr>
-                        <th rowspan="4">First Year</th>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                    </tr>
-                    <tr>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                    </tr>
-                    <tr>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                    </tr>
-                    <tr>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                    </tr>
-                    <tr>
-                        <th rowspan="4">Second Year</th>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                    </tr>
-                    <tr>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                    </tr>
-                    <tr>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                    </tr>
-                    <tr>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                    </tr>
-                    <tr>
-                        <th rowspan="4">Third Year</th>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                    </tr>
-                    <tr>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                    </tr>
-                    <tr>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                    </tr>
-                    <tr>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                    </tr>
-                    <tr>
-                        <th rowspan="4">Fourth Year</th>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                    </tr>
-                    <tr>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                    </tr>
-                    <tr>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                    </tr>
-                    <tr>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                        <td>MGMT 165</td>
-                    </tr>
-                </table>
+                <!-- <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)"></div> -->
+                <div class="divTable">
+	                <div class="divTableBody">
+		                <div class="divTableRow">
+			                <div class="divTableCell" id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">DRAG LOGO TO HERE</div>
+			                <div class="divTableCell">Fall</div>
+			                <div class="divTableCell">Winter</div>
+			                <div class="divTableCell">Spring</div>
+		                </div>
+		                <div class="divTableRow">
+			                <div class="divTableCell">First Year</div>
+			                <div class="divTableCell">MGMT165</div>
+			                <div class="divTableCell">MGMT165</div>
+			                <div class="divTableCell">MGMT165</div>
+		                </div>
+		                <div class="divTableRow">
+			                <div class="divTableCell">Second Year</div>
+			                <div class="divTableCell">MGMT165</div>
+			                <div class="divTableCell">MGMT165</div>
+			                <div class="divTableCell">MGMT165</div>
+		                </div>
+		                <div class="divTableRow">
+			                <div class="divTableCell">Third Year</div>
+			                <div class="divTableCell">MGMT165</div>
+			                <div class="divTableCell">MGMT165</div>
+			                <div class="divTableCell">MGMT165</div>
+		                </div>
+		                <div class="divTableRow">
+			                <div class="divTableCell">Fourth Year</div>
+			                <div class="divTableCell">MGMT165</div>
+			                <div class="divTableCell">MGMT165</div>
+			                <div class="divTableCell">MGMT165</div>
+		                </div>
+	                </div>
+                </div>
             </div>
             <div class="courses-lists">
                 <div class="courses-list">
