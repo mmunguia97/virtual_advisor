@@ -9,7 +9,7 @@ const connection = mysql.createConnection({
 	host     : 'localhost',
 	user     : 'root',
 	password : '',
-	database : 'testdb'
+	database : 'virtualadvisor'
 });
 connection.connect( (err) => {
     if (err) throw err;	
@@ -17,8 +17,10 @@ connection.connect( (err) => {
 });
 
 // Renders the index.html
+app.use(express.static(__dirname));
+
 app.get('/', (req,res) => {    
-    res.sendFile(path.join(__dirname + '/webpages/main-page.html'));
+    res.sendFile(path.join(__dirname + '/webpages/initial-page.html'));
 });
 
 // Listen
@@ -27,46 +29,52 @@ app.listen(port, () => console.log(`Server started on ${port}`));
 
 // Types of list view
 const listTypes = [
-    { table: 'ClassInMajor', id: 'majorId' },
-    { table: 'ClassInMinor', id: 'minorId' },
+    { table: 'CourseInMajor', id: 'majorId' },
+    { table: 'CourseInMinor', id: 'minorId' },
     { table: 'Department', id: 'id' }
 ];
 
+
 // Sets up the 4 year plan and initializes the two list views (major, core)
-app.get('/createPlan', (req, res) => {
-    let majorId = req.body.id;
+app.post('/createPlan', (req, res) => {
+    let majorId = 1;
+    let queryResults = [];
 
     // Collects courses in the major view
-    let majorViewQuery = 'select * from `Course` where id in (select classId from `ClassInMajor` where majorId=' + majorId;
-    connection.query(majorViewQuery, (err, results) => {
-        if (err) {
-	    	console.log("Error ocurred.", err);
-  	    	res.send({err});
-        }
-        else 
-            res.send(results);
-    });
-
-    // Collects the core entries for the Core View
-    let coreViewQuery = 'select * from `Core`';
-    connection.query(coreViewQuery, (err, results) => {
-        if (err) {
-	    	console.log("Error ocurred.", err);
-  	    	res.send({err});
-        }
-        else 
-            res.send(results);
-    });
-
-    // Collects classes that go in 4 year schedule
-    let majorScheduleQuery = 'select courseAbrreviation from `Course` where id in (select classId from `ClassInMajor` where isAutoSchedule=1 and majorId=' + majorId;
-    connection.query(majorScheduleQuery, (err, results) => {
+    let majorViewQuery = 'select * from `Course` where id in (select courseId from `CourseInMajor` where majorId=' + majorId + ');';
+    connection.query(majorViewQuery, (err, majorResults) => {
         if (err) {
 	    	console.log("Error ocurred.", err);
   	    	res.send({err});
         }
         else {
-            res.send(results);
+            queryResults.push(majorResults);
+
+            // Collects core classes for the core list view
+            let coreViewQuery = 'select * from `Core`';
+            connection.query(coreViewQuery, (err, coreResults) => {
+                if (err) {
+                    console.log("Error ocurred.", err);
+                    res.send({err});
+                }
+                else {
+                    queryResults.push(coreResults);
+
+                    // Collects classes that go in 4 year schedule
+                    let majorScheduleQuery = 'select * from `Course` where id in (select courseId from `CourseInMajor` where isAutoSchedule=1 and majorId=' + majorId+');';
+                    connection.query(majorScheduleQuery, (err, planResults) => {
+                        if (err) {
+                            console.log("Error ocurred.", err);
+                            res.send({err});
+                        }
+                        else  {
+                            queryResults.push(planResults);
+                            console.log(queryResults);
+                            res.send(queryResults);
+                        }
+                    });
+                }
+            });
         }
     });
 });
