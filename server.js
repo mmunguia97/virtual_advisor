@@ -17,8 +17,10 @@ connection.connect( (err) => {
 });
 
 // Renders the index.html
+app.use(express.static(__dirname));
+
 app.get('/', (req,res) => {    
-    res.sendFile(path.join(__dirname + '/webpages/main-page.html'));
+    res.sendFile(path.join(__dirname + '/webpages/initial-page.html'));
 });
 
 // Listen
@@ -32,8 +34,9 @@ const listTypes = [
     { table: 'Department', id: 'id' }
 ];
 
+
 // Sets up the 4 year plan and initializes the two list views (major, core)
-app.get('/createPlan', (req, res) => {
+app.post('/createPlan', (req, res) => {
     let majorId = 1;
     let queryResults = [];
 
