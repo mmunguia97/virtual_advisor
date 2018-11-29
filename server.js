@@ -8,7 +8,7 @@ var mysql = require('mysql');
 const connection = mysql.createConnection({
 	host     : 'localhost',
 	user     : 'root',
-	password : 'Hamilton48!',
+	password : '',
 	database : 'virtualadvisor'
 });
 connection.connect( (err) => {
