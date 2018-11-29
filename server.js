@@ -8,7 +8,7 @@ var mysql = require('mysql');
 const connection = mysql.createConnection({
 	host     : 'localhost',
 	user     : 'root',
-	password : '',
+	password : 'Hamilton48!',
 	database : 'virtualadvisor'
 });
 connection.connect( (err) => {
@@ -61,7 +61,7 @@ app.post('/createPlan', (req, res) => {
                     queryResults.push(coreResults);
 
                     // Collects classes that go in 4 year schedule
-                    let majorScheduleQuery = 'select * from `Course` where id in (select courseId from `CourseInMajor` where isAutoSchedule=1 and majorId=' + majorId+');';
+                    let majorScheduleQuery = 'select * from `Course` INNER JOIN `CourseInMajor` on `Course`.id = `CourseInMajor`.courseId where `CourseInMajor`.majorId=' + majorId + ';';
                     connection.query(majorScheduleQuery, (err, planResults) => {
                         if (err) {
                             console.log("Error ocurred.", err);
