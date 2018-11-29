@@ -1,8 +1,8 @@
 let majorId = 0;
 let schedule = [];
 let scheduleLength = 48;
-let queryResults;
 let currentCourse;
+let majorView;
 
 sendMajorId = () => {
     majorId = document.getElementById("major-options").value;
@@ -17,7 +17,9 @@ sendMajorId = () => {
             }    
         })
         .then((res) => { return res.json() })
-        .then((data) => { queryResults = data; autoPopulateSchedule()
+        .then((data) => { 
+            localStorage.setItem("queryResults", JSON.stringify(data));
+            window.location = "webpages/main-page.html";
         });   
     }
 };
@@ -27,20 +29,20 @@ getDroppedCourseTitle = (title) => {
 };
 
 getDroppedCourseId = (id) => {
-    console.log(id);
     schedule[id] = currentCourse;
-    console.log(schedule);
 };
 
-autoPopulateSchedule = () => {
-    console.log(queryResults);
+setSchedule = (queryResults) => {
+    console.log("setting schedule..")
     let majorView = queryResults[2];
     console.log(majorView);
     for (var i=0;i<majorView.length;i++) {
         schedule[majorView[i].schedulePosition] = majorView[i];
     }
-
-    console.log(schedule);
-    window.location = "webpages/main-page.html";
-    alert("woooo");
 };
+
+getSchedule = () => {
+    console.log("using schedule...")
+    console.log(schedule);
+    return schedule;
+}
