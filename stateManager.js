@@ -1,5 +1,4 @@
 let majorId = 0;
-let majors = ["", "Computer Science", "Mathematics"]
 let schedule = [];
 let scheduleLength = 48;
 let currentCourse;
@@ -24,10 +23,8 @@ sendMajorId = () => {
             localStorage.setItem("queryResults", JSON.stringify(data));
             if (parseInt(localStorage.getItem("change"))==0){
                 window.location = "webpages/main-page.html";
-                localStorage["change"] = "1";
             }
             else {
-                localStorage["major"] = majors[majorId];
                 window.location = "main-page.html";
             }
         });   
