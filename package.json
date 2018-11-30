@@ -10,7 +10,9 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "express": "^4.16.4",
+    "html": "^1.0.0",
     "mysql": "^2.16.0"
   }
 }

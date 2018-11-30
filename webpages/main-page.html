@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" type="text/css">
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="../font-awesome/css/all.css" type="text/css">
+    
+    <!-- Our CSS for previous components -->
+    <link rel="stylesheet" href="../css/courses-list.css" type="text/css">
+    <link rel="stylesheet" href="../css/navbar.css" type="text/css">
+    <link rel="stylesheet" href="../css/schedule.css" type="text/css">
+
+    <!-- Our CSS unique to this webpage -->
+    <link rel="stylesheet" href="../css/main-page.css" type="text/css">
+
+    <title>Virtual Advisor</title>
+
+    <!-- Functions assoicated with dragging a course from the list of courses into the schedule-->
+    <script>  
+    function allowDrop(event) {
+        event.preventDefault();
+    };
+
+    function makeDragImageTransparent(event) {
+        var blankImage = new Image();
+        blankImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
+        event.dataTransfer.setDragImage(blankImage, 0, 0);
+    };
+
+    function getCourseName(event, courseTitle) {
+        if (courseTitle != null)
+            var courseName = courseTitle.innerText.split(':')[0];
+        else
+            var courseName = event.target.innerText;
+
+        return courseName;
+    };
+
+    function drag(event) {
+        makeDragImageTransparent(event);
+        var courseTitle = event.target.querySelector('.course-title');
+        var course_name = getCourseName(event, courseTitle);
+
+        getDroppedCourseTitle(course_name);
+        event.dataTransfer.setData("course-name", course_name);
+
+        event.dataTransfer.setData("sourceid", event.target.id);
+    };
+
+    function drop(event) {
+        currentText = document.getElementById(event.target.id).innerText;
+
+        var data = event.dataTransfer.getData("course-name");
+        event.target.querySelector('.course-name').innerText = data;
+        getDroppedCourseId(event.target.id);
+
+        var sourceid = event.dataTransfer.getData("sourceid");        
+
+        if (sourceid)
+            document.getElementById(sourceid).querySelector('.course-name').innerText = currentText;
+    };
+
+    function autoPopulateSchedule(event) {
+        let majorSchedule = getSchedule();
+
+        for (var i=0;i<majorSchedule.length;i++) {
+            if (majorSchedule[i]!=null) {
+                let id = i.toString();
+               
+                document.getElementById(id).querySelector(".course-name").innerHTML =  majorSchedule[i].courseAbbreviation;
+            }
+        }
+    };
+    </script>
+
+    <!-- Functions associated with the schedule ONLY-->
+    <script>
+    function hideDeleteButton(event)
+    {
+        event.querySelector('.remove-course').style.visibility = 'hidden';
+    }
+    function removeCourse(event)
+    {
+        event.target.parentNode.querySelector('.course-name').innerText = '';
+    }
+    function showDeleteButton(event)
+    {
+        if(event.querySelector('.course-name').innerHTML != '')
+                event.querySelector('.remove-course').style.visibility = 'visible';
+    }
+    </script>
+
+    <!-- Functions associated with the list of courses ONLY-->
+    <script>
+    function get_quarters(availabilty)
+    {
+        var quarters = [];
+        if (availabilty[0] == 1)
+            quarters.push('Fall');
+        if (availabilty[1] == 1)
+            quarters.push('Winter');
+        if (availabilty[2] == 1)
+            quarters.push('Spring');
+        if (availabilty[3] == 1)
+            quarters.push('Summer');
+        return quarters;
+    }
+
+    function get_course_names_and_ids(data)
+    {
+        var info = {}
+
+        for(var i = 0; i < data.length; i++)
+        {
+            info[data[i].id] = data[i].courseAbbreviation;
+        }
+
+        return info;
+    }
+
+    function get_prereqs_ids(course_id, prereqs)
+    {
+        return prereqs[course_id];
+    }   
+
+    function get_prereqs_of_courses(prereq_data)
+    {
+        var prereqs = {}
+        
+        for(var i = 0; i < prereq_data.length; i++)
+        {
+            if (!(prereq_data[i].courseId in prereqs))
+                prereqs[prereq_data[i].courseId] = [prereq_data[i].prereqCourseId];
+            else
+                prereqs[prereq_data[i].courseId].push(prereq_data[i].prereqCourseId);
+        }
+        
+        return prereqs;
+    }
+
+    function get_prereqs_names(course_prereqs_ids, all_course_names_and_ids)
+    {
+        if (course_prereqs_ids == null)
+            return null;
+
+        var prereqs = [];
+
+        for(var i = 0; i < course_prereqs_ids.length; i++)
+        {
+            prereqs.push(all_course_names_and_ids[course_prereqs_ids[i]]);
+        }
+
+        return prereqs;
+    }
+    </script>
+
+    <!-- Template for a course in a list of courses -->
+    <script id="course" type="text/html">
+        <div class="d-flex w-100 justify-content-between">
+            <p class="course-title"></p>
+        </div>
+        <div class="d-flex w-100 justify-content-start course-info core-satisfied">
+            <div class="d-flex flex-wrap">
+                <small>Core:</small>
+            </div>
+            <div class="d-flex flex-wrap">
+                <span class="badge badge-pill badge-info">N/A</span>
+            </div>
+        </div>
+        <div class="d-flex w-100 justify-content-start course-info course-prereqs">
+            <div class="d-flex flex-wrap">
+                <small>Prerequisites:</small>
+            </div>
+            <div class="d-flex flex-wrap">
+                <!-- <span class="badge badge-pill badge-info">None</span> -->
+            </div>
+        </div>
+        <div class="d-flex w-100 justify-content-start course-info quarter-availability">
+            <div class="d-flex flex-wrap">
+                <small>Quarter:</small>
+            </div>
+            <div class="d-flex flex-wrap"></div>
+        </div>
+    </script>
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-brand">
+            <a href="https://www.scu.edu">
+                <div class="logo">
+                    <img src="../img/Santa_Clara_U_Seal.svg.png" width="45" height="45">
+                </div>
+                <div class="text">
+                    <small class="text-uppercase">Santa Clara University</small>
+                    <p>Virtual Advisor</p>
+                </div>
+            </a>
+        </div>
+    </nav>
+    <div id="main" class="container">
+        <div class="row schedule-title">
+            <h2>Recommended 4 year schedule</h2>
+        </div>
+        <div class="row">
+            <div class="schedule-container">
+                <table class="schedule">
+                    <tr>
+                        <th>Year</th>
+                        <th>Fall</th>
+                        <th>Winter</th>
+                        <th>Spring</th>
+                    </tr>
+                    <tr>
+                        <th rowspan="4">First Year</th>
+                        <td id="0" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="4" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="8" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="1" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="5" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="9" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="2" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="6" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="10" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="3" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="7" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="11" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th rowspan="4">Second Year</th>
+                        <td id="12" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="16" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="20" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="13" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="17" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="21" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="14" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="18" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="22" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="15" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="19" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="23" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th rowspan="4">Third Year</th>
+                        <td id="24" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="28" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="32" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="25" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="29" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="33" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="26" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="30" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="34" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="27" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="31" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="35" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th rowspan="4">Fourth Year</th>
+                        <td id="36" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="40" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="44" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="37" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="41" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="45" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="38" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="42" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="46" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="39" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="43" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="47" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="courses-lists">
+                <div class="courses-list">
+                    <select class="form-control" id="major-options" onchange="sendMajorId()">
+                        <option value='0'></option>
+                        <option value="1" onclick="sendMajorId()">Computer Science</option>
+                        <option value="2" onclick="sendMajorId()">Mathematics</option>
+                    </select>    
+                </div>
+                <div class="courses-list">
+                    <h4>Core Requirements</h4>
+                </div>
+            </div>
+        </div>
+
+        <script src= "../stateManager.js"></script>
+        <script>
+            setSchedule(JSON.parse(localStorage.getItem("queryResults")));
+            autoPopulateSchedule();
+        </script>
+
+        <!-- Script to populate list of major courses -->
+        <script>          
+        var data = [[{"id":2,"name":"Introduction to Computer Science","deptId":1,"courseAbbreviation":"CSCI 10","quarterOffered":"1100","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[0]},"coreReqId":18},{"id":3,"name":"Object-Oriented Programming","deptId":1,"courseAbbreviation":"CSCI 60","quarterOffered":"0110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null},{"id":4,"name":"Data Structures","deptId":1,"courseAbbreviation":"CSCI 61","quarterOffered":"1010","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null},{"id":5,"name":"Theory of Automata and Languages","deptId":1,"courseAbbreviation":"CSCI 161","quarterOffered":"1000","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null},{"id":7,"name":"Theory of Algorithms","deptId":1,"courseAbbreviation":"CSCI 163A","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null},{"id":23,"name":"Calculus and Analytical Geometry I","deptId":1,"courseAbbreviation":"MATH 11","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":14},{"id":24,"name":"Calculus and Analytical Geometry II","deptId":1,"courseAbbreviation":"MATH 12","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":14},{"id":25,"name":"Calculus and Analytical Geometry III","deptId":1,"courseAbbreviation":"MATH 13","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null},{"id":26,"name":"Calculus and Analytical Geometry IV","deptId":1,"courseAbbreviation":"MATH 14","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null},{"id":33,"name":"Discrete Mathematics","deptId":1,"courseAbbreviation":"MATH 51","quarterOffered":"1010","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[0]},"coreReqId":null},{"id":35,"name":"Linear Algebra","deptId":1,"courseAbbreviation":"MATH 53","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null},{"id":44,"name":"Probability and Statistics I","deptId":1,"courseAbbreviation":"MATH 122","quarterOffered":"1100","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null},{"id":62,"name":"Introduction to Embedded Systems","deptId":2,"courseAbbreviation":"COEN 20","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null},{"id":63,"name":"Introduction to Logic Design","deptId":2,"courseAbbreviation":"COEN 21","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[0]},"coreReqId":null},{"id":64,"name":"Operating Systems","deptId":2,"courseAbbreviation":"COEN 177","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null}],[{"id":1,"name":"Critical Thinking & Writing 1"},{"id":2,"name":"Critical Thinking & Writing 2"},{"id":3,"name":"Advanced Writing"},{"id":4,"name":"Cultures & Ideas 1"},{"id":5,"name":"Cultures & Ideas 2"},{"id":6,"name":"Cultures & Ideas 3"},{"id":7,"name":"Social Science"},{"id":8,"name":"Natural Science"},{"id":9,"name":"Arts"},{"id":10,"name":"Civic Engagement"},{"id":11,"name":"Experiential Learning Social Justice"},{"id":12,"name":"Diversity"},{"id":13,"name":"Ethics"},{"id":14,"name":"Mathematics"},{"id":15,"name":"Religion, Theology & Culture 1"},{"id":16,"name":"Religion, Theology & Culture 2"},{"id":17,"name":"Religion, Theology & Culture 3"},{"id":18,"name":"Science, Technology & Society"}],[{"id":2,"name":"Introduction to Computer Science","deptId":1,"courseAbbreviation":"CSCI 10","quarterOffered":"1100","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[0]},"coreReqId":18,"majorId":1,"courseId":2,"isAutoSchedule":{"type":"Buffer","data":[1]},"isDeptRequired":{"type":"Buffer","data":[1]},"schedulePosition":0},{"id":3,"name":"Object-Oriented Programming","deptId":1,"courseAbbreviation":"CSCI 60","quarterOffered":"0110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null,"majorId":1,"courseId":3,"isAutoSchedule":{"type":"Buffer","data":[1]},"isDeptRequired":{"type":"Buffer","data":[1]},"schedulePosition":4},{"id":4,"name":"Data Structures","deptId":1,"courseAbbreviation":"CSCI 61","quarterOffered":"1010","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null,"majorId":1,"courseId":4,"isAutoSchedule":{"type":"Buffer","data":[1]},"isDeptRequired":{"type":"Buffer","data":[1]},"schedulePosition":8},{"id":5,"name":"Theory of Automata and Languages","deptId":1,"courseAbbreviation":"CSCI 161","quarterOffered":"1000","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null,"majorId":1,"courseId":5,"isAutoSchedule":{"type":"Buffer","data":[1]},"isDeptRequired":{"type":"Buffer","data":[1]},"schedulePosition":36},{"id":7,"name":"Theory of Algorithms","deptId":1,"courseAbbreviation":"CSCI 163A","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null,"majorId":1,"courseId":7,"isAutoSchedule":{"type":"Buffer","data":[1]},"isDeptRequired":{"type":"Buffer","data":[1]},"schedulePosition":20},{"id":23,"name":"Calculus and Analytical Geometry I","deptId":1,"courseAbbreviation":"MATH 11","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":14,"majorId":1,"courseId":23,"isAutoSchedule":{"type":"Buffer","data":[1]},"isDeptRequired":{"type":"Buffer","data":[1]},"schedulePosition":1},{"id":24,"name":"Calculus and Analytical Geometry II","deptId":1,"courseAbbreviation":"MATH 12","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":14,"majorId":1,"courseId":24,"isAutoSchedule":{"type":"Buffer","data":[1]},"isDeptRequired":{"type":"Buffer","data":[1]},"schedulePosition":5},{"id":25,"name":"Calculus and Analytical Geometry III","deptId":1,"courseAbbreviation":"MATH 13","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null,"majorId":1,"courseId":25,"isAutoSchedule":{"type":"Buffer","data":[1]},"isDeptRequired":{"type":"Buffer","data":[1]},"schedulePosition":9},{"id":26,"name":"Calculus and Analytical Geometry IV","deptId":1,"courseAbbreviation":"MATH 14","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null,"majorId":1,"courseId":26,"isAutoSchedule":{"type":"Buffer","data":[1]},"isDeptRequired":{"type":"Buffer","data":[1]},"schedulePosition":12},{"id":33,"name":"Discrete Mathematics","deptId":1,"courseAbbreviation":"MATH 51","quarterOffered":"1010","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[0]},"coreReqId":null,"majorId":1,"courseId":33,"isAutoSchedule":{"type":"Buffer","data":[1]},"isDeptRequired":{"type":"Buffer","data":[1]},"schedulePosition":13},{"id":35,"name":"Linear Algebra","deptId":1,"courseAbbreviation":"MATH 53","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null,"majorId":1,"courseId":35,"isAutoSchedule":{"type":"Buffer","data":[1]},"isDeptRequired":{"type":"Buffer","data":[1]},"schedulePosition":22},{"id":44,"name":"Probability and Statistics I","deptId":1,"courseAbbreviation":"MATH 122","quarterOffered":"1100","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null,"majorId":1,"courseId":44,"isAutoSchedule":{"type":"Buffer","data":[1]},"isDeptRequired":{"type":"Buffer","data":[1]},"schedulePosition":17},{"id":62,"name":"Introduction to Embedded Systems","deptId":2,"courseAbbreviation":"COEN 20","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null,"majorId":1,"courseId":62,"isAutoSchedule":{"type":"Buffer","data":[1]},"isDeptRequired":{"type":"Buffer","data":[1]},"schedulePosition":16},{"id":63,"name":"Introduction to Logic Design","deptId":2,"courseAbbreviation":"COEN 21","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[0]},"coreReqId":null,"majorId":1,"courseId":63,"isAutoSchedule":{"type":"Buffer","data":[1]},"isDeptRequired":{"type":"Buffer","data":[1]},"schedulePosition":21},{"id":64,"name":"Operating Systems","deptId":2,"courseAbbreviation":"COEN 177","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null,"majorId":1,"courseId":64,"isAutoSchedule":{"type":"Buffer","data":[1]},"isDeptRequired":{"type":"Buffer","data":[1]},"schedulePosition":24}],[{"courseId":3,"prereqCourseId":2},{"courseId":4,"prereqCourseId":3},{"courseId":5,"prereqCourseId":33},{"courseId":7,"prereqCourseId":4},{"courseId":7,"prereqCourseId":33},{"courseId":24,"prereqCourseId":23},{"courseId":25,"prereqCourseId":24},{"courseId":26,"prereqCourseId":25},{"courseId":35,"prereqCourseId":25},{"courseId":44,"prereqCourseId":26},{"courseId":62,"prereqCourseId":3},{"courseId":63,"prereqCourseId":4},{"courseId":63,"prereqCourseId":62}]];
+            
+            // Create the list of MAJOR courses
+            var courses = document.createElement('div');
+            courses.setAttribute('class', 'list-group courses');
+
+            // Find the prereqs for each course
+            var prereqs = get_prereqs_of_courses(data[3]);
+            
+            // Find the course name of each course id
+            var all_course_names_and_ids = get_course_names_and_ids(data[0]);
+
+            for(var i = 0; i < data[0].length; i++)
+            {
+                var course = document.createElement('a');
+                course.setAttribute('href', '#');
+                course.setAttribute('class', 'list-group-item list-group-item-action flex-column align-items-start course');
+                course.setAttribute('draggable', 'true');
+                course.setAttribute('ondragstart', 'drag(event)');
+                course.innerHTML = document.getElementById('course').innerHTML;
+
+                // Create course title
+                course.querySelector('.course-title').innerHTML = data[0][i].courseAbbreviation + ': ' + data[0][i].name;
+
+                // Create prerequisites
+                var course_prereqs_ids = get_prereqs_ids(data[0][i].id, prereqs);
+                var course_prereqs_names = get_prereqs_names(course_prereqs_ids, all_course_names_and_ids);
+
+                if (course_prereqs_names == null)
+                {
+                    var prereq = document.createElement('span');
+                    prereq.setAttribute('class', 'badge badge-pill badge-info');
+                    prereq.innerText = 'None';
+                    course.querySelector('.course-prereqs .flex-wrap:last-child').appendChild(prereq);
+                }
+                else
+                {
+                    for(var j = 0; j < course_prereqs_names.length; j++)
+                    {
+                        var prereq = document.createElement('span');
+                        prereq.setAttribute('class', 'badge badge-pill badge-warning');
+                        prereq.innerText = course_prereqs_names[j];
+                        course.querySelector('.course-prereqs .flex-wrap:last-child').appendChild(prereq); 
+                    }
+                }
+                
+                // Create quarterly availability
+                var quarters = get_quarters(data[0][i].quarterOffered);
+                for(var j = 0; j < quarters.length; j++)
+                {
+                    var quarter = document.createElement('span');
+                    quarter.setAttribute('class', 'badge badge-pill badge-danger');
+                    quarter.innerHTML = quarters[j];
+                    course.querySelector('.quarter-availability .flex-wrap:last-child').appendChild(quarter);
+                }
+                
+                courses.appendChild(course);
+            }
+ 
+            document.querySelector('.courses-list:first-child').appendChild(courses);
+            
+            // Create the list of CORE courses
+            var courses = document.createElement('div');
+            courses.setAttribute('class', 'list-group courses');
+
+            for(var i = 0; i < data[1].length; i++)
+            {
+                var course = document.createElement('a');
+                course.setAttribute('href', '#');
+                course.setAttribute('class', 'list-group-item list-group-item-action flex-column align-items-start course');
+                course.setAttribute('draggable', 'true');
+                course.setAttribute('ondragstart', 'drag(event)');
+                course.innerHTML = document.getElementById('course').innerHTML;
+
+                // Create course title
+                course.querySelector('.course-title').innerHTML = data[1][i].name;
+
+                // Create prerequisites
+                var prereq = document.createElement('span');
+                prereq.setAttribute('class', 'badge badge-pill badge-info');
+                prereq.innerText = 'None';
+                course.querySelector('.course-prereqs .flex-wrap:last-child').appendChild(prereq);
+                
+                // Create quarterly availaibility
+                var quarters = ['Fall', 'Winter', 'Spring'];
+                for(var j = 0; j < quarters.length; j++)
+                {
+                    var quarter = document.createElement('span');
+                    quarter.setAttribute('class', 'badge badge-pill badge-danger');
+                    quarter.innerHTML = quarters[j];
+                    course.querySelector('.quarter-availability .flex-wrap:last-child').appendChild(quarter);
+                }
+                
+                courses.appendChild(course);
+            }
+ 
+            document.querySelector('.courses-list:last-child').appendChild(courses);
+        </script>   
+    </div>
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+  </body>
+</html>

@@ -1,3 +1,0 @@
-// Possible JS frameworks -- useful for designing/modifying the front-end 
-http://interactjs.io/
-https://shopify.github.io/draggable/

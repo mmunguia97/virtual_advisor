@@ -3,13 +3,18 @@ var app = express();
 var port = 3000; 
 var path = require("path");
 var mysql = require('mysql');
+var bodyParser = require('body-parser');
+
+// To parse requests and get body info
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
 // Create connection and connect to MySQL db
 const connection = mysql.createConnection({
 	host     : 'localhost',
 	user     : 'root',
-	password : '',
-	database : 'testdb'
+	password : 'Hamilton48!',
+	database : 'virtualadvisor'
 });
 connection.connect( (err) => {
     if (err) throw err;	
@@ -17,8 +22,10 @@ connection.connect( (err) => {
 });
 
 // Renders the index.html
+app.use(express.static(__dirname));
+
 app.get('/', (req,res) => {    
-    res.sendFile(path.join(__dirname + '/index.html'));
+    res.sendFile(path.join(__dirname + '/webpages/initial-page.html'));
 });
 
 // Listen
@@ -27,46 +34,62 @@ app.listen(port, () => console.log(`Server started on ${port}`));
 
 // Types of list view
 const listTypes = [
-    { table: 'ClassInMajor', id: 'majorId' },
-    { table: 'ClassInMinor', id: 'minorId' },
+    { table: 'CourseInMajor', id: 'majorId' },
+    { table: 'CourseInMinor', id: 'minorId' },
     { table: 'Department', id: 'id' }
 ];
 
+
 // Sets up the 4 year plan and initializes the two list views (major, core)
-app.get('/createPlan', (req, res) => {
-    let majorId = req.body.id;
+app.post('/createPlan', (req, res) => {
+    let majorId = parseInt(req.body.id);
+    let queryResults = [];
 
     // Collects courses in the major view
-    let majorViewQuery = 'select * from `Course` where id in (select classId from `ClassInMajor` where majorId=' + majorId;
-    connection.query(majorViewQuery, (err, results) => {
-        if (err) {
-	    	console.log("Error ocurred.", err);
-  	    	res.send({err});
-        }
-        else 
-            res.send(results);
-    });
-
-    // Collects the core entries for the Core View
-    let coreViewQuery = 'select * from `Core`';
-    connection.query(coreViewQuery, (err, results) => {
-        if (err) {
-	    	console.log("Error ocurred.", err);
-  	    	res.send({err});
-        }
-        else 
-            res.send(results);
-    });
-
-    // Collects classes that go in 4 year schedule
-    let majorScheduleQuery = 'select courseAbrreviation from `Course` where id in (select classId from `ClassInMajor` where isAutoSchedule=1 and majorId=' + majorId;
-    connection.query(majorScheduleQuery, (err, results) => {
+    let majorViewQuery = 'select * from `Course` where id in (select courseId from `CourseInMajor` where majorId=' + majorId + ');';
+    connection.query(majorViewQuery, (err, majorResults) => {
         if (err) {
 	    	console.log("Error ocurred.", err);
   	    	res.send({err});
         }
         else {
-            res.send(results);
+            queryResults.push(majorResults);
+
+            // Collects core classes for the core list view
+            let coreViewQuery = 'select * from `Core`';
+            connection.query(coreViewQuery, (err, coreResults) => {
+                if (err) {
+                    console.log("Error ocurred.", err);
+                    res.send({err});
+                }
+                else {
+                    queryResults.push(coreResults);
+
+                    // Collects classes that go in 4 year schedule
+                    let majorScheduleQuery = 'select * from `Course` INNER JOIN `CourseInMajor` on `Course`.id = `CourseInMajor`.courseId where `CourseInMajor`.majorId=' + majorId + ';';
+                    connection.query(majorScheduleQuery, (err, planResults) => {
+                        if (err) {
+                            console.log("Error ocurred.", err);
+                            res.send({err});
+                        }
+                        else  {
+                            queryResults.push(planResults);
+                            
+                            let prereqQuery = 'select * from `Prerequisite` where courseId in (select courseId from `CourseInMajor` where majorId=' + majorId + ');';
+                            connection.query(prereqQuery, (err, prereqResults) => {
+                                if (err) {
+                                    console.log("Error ocurred.", err);
+                                    res.send({err});
+                                }
+                                else {
+                                    queryResults.push(prereqResults);
+                                    res.send(queryResults);
+                                }
+                            });
+                        }
+                    });
+                }
+            });
         }
     });
 });
