@@ -57,9 +57,11 @@
         for (var i=0;i<majorSchedule.length;i++) {
             if (majorSchedule[i]!=null) {
                 let id = i.toString();
-                document.getElementById(id).innerHTML = majorSchedule[i].courseAbbreviation;
+               
+                document.getElementById(id).querySelector(".course-name").innerHTML =  majorSchedule[i].courseAbbreviation;
             }
         }
+        document.getElementById("option0").innerHTML = localStorage.getItem("major");
     };
     </script>
 
@@ -386,10 +388,10 @@
             </div>
             <div class="courses-lists">
                 <div class="courses-list">
-                    <select class="form-control select-major">
-                        <option value="Economics">Economics</option>
-                        <option value="Mathematics">Mathematics</option>
-                        <option value selected="Computer Science">Computer Science</option>
+                    <select class="form-control" id="major-options" onchange="sendMajorId()">
+                        <option value='0'></option>
+                        <option value="1" onclick="sendMajorId()">Computer Science</option>
+                        <option value="2" onclick="sendMajorId()">Mathematics</option>
                     </select>    
                 </div>
                 <div class="courses-list">
@@ -397,6 +399,12 @@
                 </div>
             </div>
         </div>
+
+        <script src= "../stateManager.js"></script>
+        <script>
+            setSchedule(JSON.parse(localStorage.getItem("queryResults")));
+            autoPopulateSchedule();
+        </script>
 
         <!-- Script to populate list of major courses -->
         <script>          
@@ -464,13 +472,7 @@
             document.querySelector('.courses-list:last-child').appendChild(courses);
         </script>   
     </div>
-
-    <script src= "../stateManager.js"></script>
-    <script>
-    setSchedule(JSON.parse(localStorage.getItem("queryResults")));
-    autoPopulateSchedule();
-    </script>
-    s
+    
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

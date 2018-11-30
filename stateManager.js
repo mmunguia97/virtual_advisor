@@ -1,16 +1,19 @@
 let majorId = 0;
+let majors = ["", "Computer Science", "Mathematics"]
 let schedule = [];
 let scheduleLength = 48;
 let currentCourse;
 let majorView;
 
 sendMajorId = () => {
-    majorId = document.getElementById("major-options").value;
-    if (majorId != 0)
-    {
+    tempId = document.getElementById("major-options").value;
+    majorId = tempId;
+
+    var object = { id: majorId};
+    if (majorId != 0) {
         fetch('http://localhost:3000/createPlan', {
             method: 'POST',
-            body: JSON.stringify(majorId),
+            body: JSON.stringify(object),
             headers: {
                 "Content-Type": "application/json",
                 'Accept': 'application/json'
@@ -19,7 +22,14 @@ sendMajorId = () => {
         .then((res) => { return res.json() })
         .then((data) => { 
             localStorage.setItem("queryResults", JSON.stringify(data));
-            window.location = "webpages/main-page.html";
+            if (parseInt(localStorage.getItem("change"))==0){
+                window.location = "webpages/main-page.html";
+                localStorage["change"] = "1";
+            }
+            else {
+                localStorage["major"] = majors[majorId];
+                window.location = "main-page.html";
+            }
         });   
     }
 };
@@ -44,5 +54,6 @@ setSchedule = (queryResults) => {
 getSchedule = () => {
     console.log("using schedule...")
     console.log(schedule);
+    console.log(localStorage.getItem("queryResults"));
     return schedule;
 }
