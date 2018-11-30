@@ -1,5 +1,8 @@
 /*CSS for the schedule*/
 
+.course-name{
+	float: left;
+}
 .remove-course{
 	float: right;
 	margin-top: 3px;
