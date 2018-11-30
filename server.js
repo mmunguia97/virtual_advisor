@@ -3,12 +3,17 @@ var app = express();
 var port = 3000; 
 var path = require("path");
 var mysql = require('mysql');
+var bodyParser = require('body-parser');
+
+// To parse requests and get body info
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
 // Create connection and connect to MySQL db
 const connection = mysql.createConnection({
 	host     : 'localhost',
 	user     : 'root',
-	password : '',
+	password : 'Hamilton48!',
 	database : 'virtualadvisor'
 });
 connection.connect( (err) => {
@@ -37,7 +42,7 @@ const listTypes = [
 
 // Sets up the 4 year plan and initializes the two list views (major, core)
 app.post('/createPlan', (req, res) => {
-    let majorId = 1;
+    let majorId = parseInt(req.body.id);
     let queryResults = [];
 
     // Collects courses in the major view
@@ -69,8 +74,18 @@ app.post('/createPlan', (req, res) => {
                         }
                         else  {
                             queryResults.push(planResults);
-                            console.log(queryResults);
-                            res.send(queryResults);
+                            
+                            let prereqQuery = 'select * from `Prerequisite` where courseId in (select courseId from `CourseInMajor` where majorId=' + majorId + ');';
+                            connection.query(prereqQuery, (err, prereqResults) => {
+                                if (err) {
+                                    console.log("Error ocurred.", err);
+                                    res.send({err});
+                                }
+                                else {
+                                    queryResults.push(prereqResults);
+                                    res.send(queryResults);
+                                }
+                            });
                         }
                     });
                 }
