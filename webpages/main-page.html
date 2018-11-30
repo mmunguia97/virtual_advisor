@@ -21,32 +21,56 @@
     <title>Virtual Advisor</title>
 
     <!-- JS to populate the table with classes from list -->
-    <script>
-    function allowDrop(ev) {
-        ev.preventDefault();
-    }
+    <script>  
+    function allowDrop(event) {
+        event.preventDefault();
+    };
 
-    function drag(ev) {
+    function drag(event) {
         // Make the ghost image transparent
         var img = new Image();
         img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
-        ev.dataTransfer.setDragImage(img, 0, 0);
+        event.dataTransfer.setDragImage(img, 0, 0);
 
         // Get the course name to populate a block on the schedule
         var course_title = event.target.querySelector('.course-title');
         
-        if (course_title != null)
+        if (course_title != null) 
             var course_name = course_title.innerHTML.split(':')[0];
         else
             var course_name = event.target.innerHTML;
 
-        ev.dataTransfer.setData("course-name", course_name);
-    }
+        getDroppedCourseTitle(course_name);
+        event.dataTransfer.setData("course-name", course_name);
+    };
 
-    function drop(ev) {
-        var data = ev.dataTransfer.getData("course-name");
-        ev.target.innerHTML = data;
-    }
+    function drop(event) {
+        var data = event.dataTransfer.getData("course-name");
+        event.target.innerHTML = data;
+        getDroppedCourseId(event.target.id);
+    };
+
+    function autoPopulateSchedule(event) {
+        let majorSchedule = getSchedule();
+        console.log(majorSchedule);
+        console.log("populating schedule?...");
+        for (var i=0;i<majorSchedule.length;i++) {
+            if (majorSchedule[i]!=null) {
+                let id = i.toString();
+                document.getElementById(id).innerHTML = majorSchedule[i].courseAbbreviation;
+            }
+        }
+    };
+
+    function remove(id) {
+        var element = document.getElementById(id).innerText;
+        
+        if (element!== "")
+            element = "";
+
+        document.getElementById(id).innerText = element;
+    };
+
     </script>
 
     <!-- Functions associated with the list of courses -->
@@ -125,87 +149,87 @@
                     </tr>
                     <tr>
                         <th rowspan="4">First Year</th>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
+                        <td id="0" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="4" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="8" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
                     </tr>
                     <tr>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
+                        <td id="1" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="5" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="9" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
                     </tr>
                     <tr>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
+                        <td id="2" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="6" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="10" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
                     </tr>
                     <tr>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
+                        <td id="3" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="7" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="11" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
                     </tr>
                     <tr>
                         <th rowspan="4">Second Year</th>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
+                        <td id="12" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="16" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="20" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
                     </tr>
                     <tr>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
+                        <td id="13" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="17" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="21" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
                     </tr>
                     <tr>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
+                        <td id="14" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="18" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="22" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
                     </tr>
                     <tr>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
+                        <td id="15" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="19" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="23" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
                     </tr>
                     <tr>
                         <th rowspan="4">Third Year</th>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
+                        <td id="24" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="28" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="32" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
                     </tr>
                     <tr>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
+                        <td id="25" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="29" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="33" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
                     </tr>
                     <tr>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
+                        <td id="26" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="30" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="34" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
                     </tr>
                     <tr>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
+                        <td id="27" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="31" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="35" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
                     </tr>
                     <tr>
                         <th rowspan="4">Fourth Year</th>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
+                        <td id="36" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="40" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="44" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
                     </tr>
                     <tr>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
+                        <td id="37" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="41" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="45" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
                     </tr>
                     <tr>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
+                        <td id="38" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="42" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="46" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
                     </tr>
                     <tr>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
-                        <td ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)"></td>
+                        <td id="39" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="43" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="47" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
                     </tr>
                 </table>
             </div>
@@ -290,9 +314,13 @@
         </script>   
     </div>
 
+    <script src= "../stateManager.js"></script>
+    <script>
+    setSchedule(JSON.parse(localStorage.getItem("queryResults")));
+    autoPopulateSchedule();
+    </script>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src= "../stateManager.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="../bootstrap/js/bootstrap.min.js"></script>
