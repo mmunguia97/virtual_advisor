@@ -42,12 +42,22 @@
 
         getDroppedCourseTitle(course_name);
         event.dataTransfer.setData("course-name", course_name);
+
+        event.dataTransfer.setData("sourceid", event.target.id);
     };
 
     function drop(event) {
+        currentText = document.getElementById(event.target.id).innerText;
+
         var data = event.dataTransfer.getData("course-name");
         event.target.querySelector('.course-name').innerText = data;
         getDroppedCourseId(event.target.id);
+
+        var sourceid = event.dataTransfer.getData("sourceid");        
+
+        console.log(currentText);
+        if (sourceid)
+            document.getElementById(sourceid).querySelector('.course-name').innerText = currentText;
     };
 
     function autoPopulateSchedule(event) {
