@@ -20,7 +20,7 @@
 
     <title>Virtual Advisor</title>
 
-    <!-- JS to populate the table with classes from list -->
+    <!-- Functions assoicated with dragging a course from the list of courses into the schedule-->
     <script>  
     function allowDrop(event) {
         event.preventDefault();
@@ -36,9 +36,9 @@
         var course_title = event.target.querySelector('.course-title');
         
         if (course_title != null) 
-            var course_name = course_title.innerHTML.split(':')[0];
+            var course_name = course_title.innerText.split(':')[0];
         else
-            var course_name = event.target.innerHTML;
+            var course_name = event.target.innerText;
 
         getDroppedCourseTitle(course_name);
         event.dataTransfer.setData("course-name", course_name);
@@ -46,7 +46,7 @@
 
     function drop(event) {
         var data = event.dataTransfer.getData("course-name");
-        event.target.innerHTML = data;
+        event.target.querySelector('.course-name').innerText = data;
         getDroppedCourseId(event.target.id);
     };
 
@@ -61,19 +61,26 @@
             }
         }
     };
-
-    function remove(id) {
-        var element = document.getElementById(id).innerText;
-        
-        if (element!== "")
-            element = "";
-
-        document.getElementById(id).innerText = element;
-    };
-
     </script>
 
-    <!-- Functions associated with the list of courses -->
+    <!-- Functions associated with the schedule ONLY-->
+    <script>
+    function hideDeleteButton(event)
+    {
+        event.querySelector('.remove-course').style.visibility = 'hidden';
+    }
+    function removeCourse(event)
+    {
+        event.target.parentNode.querySelector('.course-name').innerText = '';
+    }
+    function showDeleteButton(event)
+    {
+        if(event.querySelector('.course-name').innerHTML != '')
+                event.querySelector('.remove-course').style.visibility = 'visible';
+    }
+    </script>
+
+    <!-- Functions associated with the list of courses ONLY-->
     <script>
     function get_quarters(availabilty)
     {
@@ -149,87 +156,231 @@
                     </tr>
                     <tr>
                         <th rowspan="4">First Year</th>
-                        <td id="0" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="4" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="8" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="0" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="4" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="8" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
                     </tr>
                     <tr>
-                        <td id="1" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="5" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="9" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="1" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="5" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="9" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
                     </tr>
                     <tr>
-                        <td id="2" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="6" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="10" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="2" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="6" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="10" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
                     </tr>
                     <tr>
-                        <td id="3" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="7" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="11" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="3" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="7" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="11" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
                     </tr>
                     <tr>
                         <th rowspan="4">Second Year</th>
-                        <td id="12" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="16" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="20" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="12" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="16" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="20" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
                     </tr>
                     <tr>
-                        <td id="13" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="17" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="21" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="13" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="17" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="21" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
                     </tr>
                     <tr>
-                        <td id="14" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="18" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="22" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="14" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="18" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="22" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
                     </tr>
                     <tr>
-                        <td id="15" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="19" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="23" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="15" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="19" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="23" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
                     </tr>
                     <tr>
                         <th rowspan="4">Third Year</th>
-                        <td id="24" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="28" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="32" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="24" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="28" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="32" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
                     </tr>
                     <tr>
-                        <td id="25" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="29" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="33" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="25" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="29" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="33" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
                     </tr>
                     <tr>
-                        <td id="26" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="30" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="34" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="26" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="30" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="34" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
                     </tr>
                     <tr>
-                        <td id="27" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="31" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="35" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="27" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="31" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="35" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
                     </tr>
                     <tr>
                         <th rowspan="4">Fourth Year</th>
-                        <td id="36" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="40" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="44" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="36" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="40" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="44" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
                     </tr>
                     <tr>
-                        <td id="37" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="41" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="45" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="37" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="41" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="45" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
                     </tr>
                     <tr>
-                        <td id="38" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="42" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="46" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="38" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="42" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="46" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
                     </tr>
                     <tr>
-                        <td id="39" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="43" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
-                        <td id="47" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onclick="remove(id)"></td>
+                        <td id="39" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="43" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
+                        <td id="47" ondrop="drop(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="drag(event)" onmouseover="showDeleteButton(this)" onmouseout="hideDeleteButton(this)">
+                            <div class="course-name" style="float: left;"></div>
+                            <i class="far fa-times-circle remove-course" style="visibility: hidden;" onclick="removeCourse(event)"></i>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -247,7 +398,7 @@
             </div>
         </div>
 
-        <!-- Populate list of major courses -->
+        <!-- Script to populate list of major courses -->
         <script>          
             var data = [[{"id":2,"name":"Introduction to Computer Science","deptId":1,"courseAbbreviation":"CSCI 10","quarterOffered":"1100","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[0]},"coreReqId":18},{"id":3,"name":"Object-Oriented Programming","deptId":1,"courseAbbreviation":"CSCI 60","quarterOffered":"0110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null},{"id":4,"name":"Data Structures","deptId":1,"courseAbbreviation":"CSCI 61","quarterOffered":"1010","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null},{"id":5,"name":"Theory of Automata and Languages","deptId":1,"courseAbbreviation":"CSCI 161","quarterOffered":"1000","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null},{"id":7,"name":"Theory of Algorithms","deptId":1,"courseAbbreviation":"CSCI 163A","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null},{"id":23,"name":"Calculus and Analytical Geometry I","deptId":1,"courseAbbreviation":"MATH 11","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":14},{"id":24,"name":"Calculus and Analytical Geometry II","deptId":1,"courseAbbreviation":"MATH 12","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":14},{"id":25,"name":"Calculus and Analytical Geometry III","deptId":1,"courseAbbreviation":"MATH 13","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null},{"id":26,"name":"Calculus and Analytical Geometry IV","deptId":1,"courseAbbreviation":"MATH 14","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null},{"id":33,"name":"Discrete Mathematics","deptId":1,"courseAbbreviation":"MATH 51","quarterOffered":"1010","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[0]},"coreReqId":null},{"id":35,"name":"Linear Algebra","deptId":1,"courseAbbreviation":"MATH 53","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null},{"id":44,"name":"Probability and Statistics I","deptId":1,"courseAbbreviation":"MATH 122","quarterOffered":"1100","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null},{"id":62,"name":"Introduction to Embedded Systems","deptId":2,"courseAbbreviation":"COEN 20","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null},{"id":63,"name":"Introduction to Logic Design","deptId":2,"courseAbbreviation":"COEN 21","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[0]},"coreReqId":null},{"id":64,"name":"Operating Systems","deptId":2,"courseAbbreviation":"COEN 177","quarterOffered":"1110","courseDescription":"Description","hasPrereq":{"type":"Buffer","data":[1]},"coreReqId":null}]];
             
@@ -280,7 +431,7 @@
             document.querySelector('.courses-list:first-child').appendChild(courses);
         </script> 
 
-        <!-- Populate list of core courses -->
+        <!-- Script to populate list of core courses -->
         <script>          
             var data = [[{"id":1,"name":"Critical Thinking & Writing 1"},{"id":2,"name":"Critical Thinking & Writing 2"},{"id":3,"name":"Advanced Writing"},{"id":4,"name":"Cultures & Ideas 1"},{"id":5,"name":"Cultures & Ideas 2"},{"id":6,"name":"Cultures & Ideas 3"},{"id":7,"name":"Social Science"},{"id":8,"name":"Natural Science"},{"id":9,"name":"Arts"},{"id":10,"name":"Civic Engagement"},{"id":11,"name":"Experiential Learning Social Justice"},{"id":12,"name":"Diversity"},{"id":13,"name":"Ethics"},{"id":14,"name":"Mathematics"},{"id":15,"name":"Religion, Theology & Culture 1"},{"id":16,"name":"Religion, Theology & Culture 2"},{"id":17,"name":"Religion, Theology & Culture 3"},{"id":18,"name":"Science, Technology & Society"}]];
             
@@ -319,6 +470,7 @@
     setSchedule(JSON.parse(localStorage.getItem("queryResults")));
     autoPopulateSchedule();
     </script>
+    s
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

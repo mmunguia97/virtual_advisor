@@ -1,5 +1,13 @@
 /*CSS for the schedule*/
 
+.remove-course{
+	float: right;
+	margin-top: 3px;
+	padding-right: 5px;
+}
+.course-name{
+	pointer-events: none;
+}
 .schedule, .schedule th, .schedule td {
     border: 1px solid black;
     border-collapse: collapse;
